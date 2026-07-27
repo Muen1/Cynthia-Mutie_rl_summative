@@ -1,0 +1,9 @@
+{
+  "name": "a2c_manual_run",
+  "learning_rate": 0.0007,
+  "gamma": 0.99,
+  "n_steps": 5,
+  "ent_coef": 0.0,
+  "timesteps": 5000,
+  "mean_reward": 95.50000000000003
+}

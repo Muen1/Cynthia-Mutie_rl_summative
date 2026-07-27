@@ -1,4 +1,4 @@
-# ArtGuard Africa — RL Summative
+# ArtGuard Africa 
 
 **Mission:** ArtGuard Africa protects African artists and artisans (from
 South African modernist painters to Maasai beadwork makers) from image
@@ -17,19 +17,37 @@ documents** — before the item leaves the queue.
 Full environment spec (actions, observations, rewards, start/terminal
 conditions) is documented at the top of `environment/custom_env.py`.
 
-## Project status
 
-- [x] **Phase 1 — Environment**: custom Gymnasium env + pygame
-      visualization, validated with `gymnasium.utils.env_checker`.
-- [ ] **Phase 2 — Training**: DQN / REINFORCE / A2C / PPO training
-      scripts, hyperparameter sweep tables, comparison plots.
-- [ ] **Phase 3 — Video + Report**.
+## Training
 
-## Setup (uv only — no manual venv needed)
+```bash
+# Single quick run of each algorithm (good for testing your machine)
+uv run python -m training.dqn_training --timesteps 30000
+uv run python -m training.pg_training --algo reinforce --episodes 800
+uv run python -m training.pg_training --algo a2c --timesteps 30000
+uv run python -m training.pg_training --algo ppo --timesteps 30000
+
+# Full 10-run hyperparameter sweep for one algorithm (this is what
+# produces the report's hyperparameter tables -- logs/<algo>_sweep.csv)
+uv run python -m training.dqn_training --sweep
+uv run python -m training.pg_training --algo reinforce --sweep
+uv run python -m training.pg_training --algo a2c --sweep
+uv run python -m training.pg_training --algo ppo --sweep
+
+# After all four sweeps have run, generate report figures into assets/
+uv run python -m training.plot_results
+```
+
+Each run logs one row (hyperparameters + mean/std evaluation reward +
+training time) to `logs/<algo>_sweep.csv` -- that file **is** the
+hyperparameter table for the report, no manual copying needed. The best
+model from each sweep is saved to `models/dqn/` or `models/pg/`.
+
+## Setup
 
 ```bash
 git clone https://github.com/Muen1/Cynthia-Mutie_rl_summative
-cd Cynthia-Mutie_rl_summative
+cd artguard_rl_summative
 uv sync
 ```
 
@@ -56,9 +74,9 @@ project_root/
 │   ├── __init__.py       # registers ArtGuardAfrica-v0 with Gymnasium
 │   ├── custom_env.py      # the environment
 │   └── rendering.py       # pygame visualization
-├── training/               # (Phase 2) DQN + policy-gradient training scripts
-├── models/                 # (Phase 2) saved trained models
-├── logs/                   # (Phase 2) training logs for tensorboard/plots
+├── training/               # DQN + policy-gradient training scripts
+├── models/                 # saved trained models
+├── logs/                   # training logs for tensorboard/plots
 ├── assets/                  # report images / recorded gifs
 └── tests/                   # sanity tests
 ```

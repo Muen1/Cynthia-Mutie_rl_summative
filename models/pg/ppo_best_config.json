@@ -1,0 +1,11 @@
+{
+  "name": "ppo_manual_run",
+  "learning_rate": 0.0003,
+  "gamma": 0.99,
+  "n_steps": 256,
+  "batch_size": 64,
+  "ent_coef": 0.0,
+  "clip_range": 0.2,
+  "timesteps": 5000,
+  "mean_reward": 91.85000000000002
+}

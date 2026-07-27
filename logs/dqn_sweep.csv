@@ -1,0 +1,2 @@
+name,learning_rate,gamma,buffer_size,batch_size,exploration_fraction,exploration_final_eps,timesteps,mean_reward,std_reward,train_time_s
+dqn_manual_run,0.001,0.99,10000,32,0.3,0.05,3000,100.25,8.129,4.1

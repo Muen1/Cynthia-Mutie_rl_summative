@@ -1,0 +1,8 @@
+{
+  "name": "reinforce_manual_run",
+  "learning_rate": 0.001,
+  "gamma": 0.99,
+  "hidden_size": 64,
+  "episodes": 200,
+  "mean_reward": 5.599999999999998
+}

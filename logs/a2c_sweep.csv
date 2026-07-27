@@ -1,0 +1,2 @@
+name,learning_rate,gamma,n_steps,ent_coef,timesteps,mean_reward,std_reward,train_time_s
+a2c_manual_run,0.0007,0.99,5,0.0,5000,95.5,9.505,10.1
