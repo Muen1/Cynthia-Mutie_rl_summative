@@ -1,0 +1,5 @@
+algorithm,easy_market_reward,easy_market_std,hard_market_reward,hard_market_std,performance_drop,performance_drop_pct
+DQN,101.95,5.35,80.15,18.39,21.8,21.4
+A2C,99.8,6.15,82.9,17.68,16.9,16.9
+PPO,101.4,5.86,78.65,15.28,22.75,22.4
+REINFORCE,100.35,5.82,69.4,23.89,30.95,30.8

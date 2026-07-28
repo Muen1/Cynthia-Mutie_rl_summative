@@ -108,11 +108,24 @@ class ArtAuthenticationEnv(gym.Env):
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 4}
 
     def __init__(self, queue_size: int = 20, max_extra_looks: int = 2,
-                 render_mode: str | None = None, seed: int | None = None):
+                 render_mode: str | None = None, seed: int | None = None,
+                 risk_mean: float = 0.30, ambiguous_prob: float = 0.25,
+                 evidence_noise: float = 0.15):
+        """
+        risk_mean / ambiguous_prob / evidence_noise let us construct a
+        harder, distribution-shifted variant of the market (see
+        ArtGuardAfrica-Hard-v0 in __init__.py) for generalization testing:
+        a future market where forgers have gotten better (evidence is
+        noisier and more items are genuinely ambiguous) than what the
+        agent trained on.
+        """
         super().__init__()
         self.queue_size = queue_size
         self.max_extra_looks = max_extra_looks
         self.render_mode = render_mode
+        self.risk_mean = risk_mean
+        self.ambiguous_prob = ambiguous_prob
+        self.evidence_noise = evidence_noise
 
         self.action_space = spaces.Discrete(5)
         low = np.array([0, 0, 0, -1, 0, 0, 0, 0], dtype=np.float32)
@@ -216,18 +229,19 @@ class ArtAuthenticationEnv(gym.Env):
     # ------------------------------------------------------------------
     def _sample_item(self) -> dict:
         rng = self._rng
-        artist_risk_index = float(np.clip(rng.normal(0.30, 0.12), 0.02, 0.9))
+        artist_risk_index = float(np.clip(rng.normal(self.risk_mean, 0.12), 0.02, 0.9))
         is_forged = rng.random() < artist_risk_index
-        ambiguous = rng.random() < 0.25  # genuinely hard case, benefits from escalation
+        ambiguous = rng.random() < self.ambiguous_prob  # genuinely hard case, benefits from escalation
+        noise = self.evidence_noise
 
         if is_forged:
-            cnn_forgery_prob = float(np.clip(rng.normal(0.72, 0.15), 0, 1))
-            embedding_similarity = float(np.clip(rng.normal(0.55, 0.15), 0, 1))
-            metadata_completeness = float(np.clip(rng.normal(0.35, 0.15), 0, 1))
+            cnn_forgery_prob = float(np.clip(rng.normal(0.72, noise), 0, 1))
+            embedding_similarity = float(np.clip(rng.normal(0.55, noise), 0, 1))
+            metadata_completeness = float(np.clip(rng.normal(0.35, noise), 0, 1))
         else:
-            cnn_forgery_prob = float(np.clip(rng.normal(0.25, 0.15), 0, 1))
-            embedding_similarity = float(np.clip(rng.normal(0.85, 0.1), 0, 1))
-            metadata_completeness = float(np.clip(rng.normal(0.7, 0.15), 0, 1))
+            cnn_forgery_prob = float(np.clip(rng.normal(0.25, noise), 0, 1))
+            embedding_similarity = float(np.clip(rng.normal(0.85, noise * 0.67), 0, 1))
+            metadata_completeness = float(np.clip(rng.normal(0.7, noise), 0, 1))
 
         if ambiguous:
             # push evidence toward the noisy middle regardless of ground truth
