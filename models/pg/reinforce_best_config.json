@@ -1,8 +1,8 @@
 {
-  "name": "reinforce_manual_run",
+  "name": "reinforce_09_long",
   "learning_rate": 0.001,
   "gamma": 0.99,
   "hidden_size": 64,
-  "episodes": 200,
-  "mean_reward": 5.599999999999998
+  "episodes": 1500,
+  "mean_reward": 100.25000000000003
 }

@@ -1,2 +1,12 @@
 name,learning_rate,gamma,hidden_size,episodes,mean_reward,std_reward,train_time_s
 reinforce_manual_run,0.001,0.99,64,200,5.6,27.814,7.1
+reinforce_01_baseline,0.001,0.99,64,800,96.6,9.841,56.5
+reinforce_02_low_lr,0.0001,0.99,64,800,4.25,27.197,50.1
+reinforce_03_high_lr,0.005,0.99,64,800,96.15,9.562,21.9
+reinforce_04_low_gamma,0.001,0.9,64,800,97.85,10.312,22.5
+reinforce_05_high_gamma,0.001,0.999,64,800,97.15,8.754,24.9
+reinforce_06_small_net,0.001,0.99,16,800,4.25,27.197,23.6
+reinforce_07_big_net,0.001,0.99,128,800,94.65,12.163,24.0
+reinforce_08_short,0.001,0.99,64,300,47.45,22.666,9.6
+reinforce_09_long,0.001,0.99,64,1500,100.25,8.129,41.6
+reinforce_10_high_lr_big_net,0.003,0.99,128,800,95.45,11.129,23.2
